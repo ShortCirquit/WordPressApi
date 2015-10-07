@@ -25,4 +25,4 @@ to the require section of your `composer.json` file.
 Usage
 -----
 
-TODO
+TODO.
