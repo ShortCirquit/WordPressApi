@@ -1,0 +1,21 @@
+{
+    "name": "shortcirquit/wordpress-api",
+    "description": "Libraries for interfacing with WordPress WP-API plugin and WordPress.com APIs",
+    "type": "library",
+    "keywords": ["wordpress","api","wordpress.com","wp-api"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Nabeel Sulieman",
+            "email": "nabsul@outlook.com"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "ShortCirquit\\WordPressApi\\": ""
+        }
+    }
+}
