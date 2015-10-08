@@ -105,6 +105,9 @@ class ComWpApi extends BaseWpApi {
     protected function requestFilter(ApiRequest $request) {
         $request->headers[] = 'Authorization: Bearer ' . ($this->useAdminToken ? $this->adminToken : $this->token);
 
+        // reset to using the regular token (useAdmin flag should be explicitly set each time).
+        $this->useAdminToken = false;
+
         if ($request->body != null)
         {
             if (preg_match('/token$/', $request->url) == 0)
