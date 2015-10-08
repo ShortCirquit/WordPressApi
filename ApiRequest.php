@@ -8,10 +8,7 @@
 
 namespace ShortCirquit\WordPressApi;
 
-
-use yii\base\Object;
-
-class ApiRequest extends Object
+class ApiRequest
 {
     public $method = 'GET';
     public $url = null;
@@ -19,4 +16,13 @@ class ApiRequest extends Object
     public $params = [];
     public $curlOptions = [];
     public $body = null;
+
+    public function __construct(array $cfg = [])
+    {
+        $params = ['method', 'url', 'header', 'params', 'curlOptions', 'body'];
+        foreach ($params as $p){
+            if (isset($cfg[$p]))
+                $this->$p = $cfg[$p];
+        }
+    }
 }
