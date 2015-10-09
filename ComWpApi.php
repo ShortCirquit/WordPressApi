@@ -31,14 +31,15 @@ class ComWpApi extends BaseWpApi {
     private $wpBase = 'https://public-api.wordpress.com';
     private $selfUrl = '/rest/v1.1/me';
 
-    private $listFormat     = '/rest/v1.1/sites/{blogId}/{type}';
-    private $getFormat      = '/rest/v1.1/sites/{blogId}/{type}/{id}';
-    private $addFormat      = '/rest/v1.1/sites/{blogId}/{type}/new';
-    private $updateFormat   = '/rest/v1.1/sites/{blogId}/{type}/{id}';
-    private $deleteFormat   = '/rest/v1.1/sites/{blogId}/{type}/{id}/delete';
-    private $likeFormat     = '/rest/v1.1/sites/{blogId}/{type}/{id}/likes/new';
-    private $unlikeFormat   = '/rest/v1.1/sites/{blogId}/{type}/{id}/likes/mine/delete';
-    private $commentsFormat = '/rest/v1.1/sites/{blogId}/{type}/{id}/replies/';
+    private $listFormat       = '/rest/v1.1/sites/{blogId}/{type}';
+    private $getFormat        = '/rest/v1.1/sites/{blogId}/{type}/{id}';
+    private $addFormat        = '/rest/v1.1/sites/{blogId}/{type}/new';
+    private $updateFormat     = '/rest/v1.1/sites/{blogId}/{type}/{id}';
+    private $deleteFormat     = '/rest/v1.1/sites/{blogId}/{type}/{id}/delete';
+    private $likeFormat       = '/rest/v1.1/sites/{blogId}/{type}/{id}/likes/new';
+    private $unlikeFormat     = '/rest/v1.1/sites/{blogId}/{type}/{id}/likes/mine/delete';
+    private $repliesFormat   = '/rest/v1.1/sites/{blogId}/{type}/{id}/replies/';
+    private $newReplyFormat = '/rest/v1.1/sites/{blogId}/{type}/{id}/replies/new';
 
     public function __construct(array $config)
     {
@@ -91,9 +92,9 @@ class ComWpApi extends BaseWpApi {
     public function likePost($id){return $this->likeItem('posts', $id);}
     public function unlikePost($id){return $this->unlikeItem('posts', $id);}
 
-    public function listComments($postId, $params = []) {return $this->get($this->formatUrl($this->commentsFormat, 'posts', $postId));}
+    public function listComments($postId) {return $this->getReplies($postId);}
     public function getComment($id) {return $this->getItem('comments', $id);}
-    public function addComment($data) {return $this->newItem('comments', $data);}
+    public function addComment($id, $data) {return $this->addReply($id, $data);}
     public function updateComment($id, $data) {return $this->updateItem('comments', $id, $data);}
     public function deleteComment($id) {return $this->deleteItem('comments', $id);}
     public function likeComment($id){return $this->likeItem('comments', $id);}
@@ -121,7 +122,7 @@ class ComWpApi extends BaseWpApi {
 
     private function listItems($type){
         $url = $this->formatUrl($this->listFormat, $type);
-        return $this->get($url, ['context' => 'edit']);
+        return $this->get($url, ['context' => 'view']);
     }
 
     private function getItem($type, $id){
@@ -131,6 +132,16 @@ class ComWpApi extends BaseWpApi {
 
     private function newItem($type, $data){
         $url = $this->formatUrl($this->addFormat, $type);
+        return $this->post($url, [], $data);
+    }
+
+    private function getReplies($id){
+        $url = $this->formatUrl($this->repliesFormat, 'posts', $id);
+        return $this->get($url, ['context' => 'edit']);
+    }
+
+    private function addReply($id, $data){
+        $url = $this->formatUrl($this->newReplyFormat, 'posts', $id);
         return $this->post($url, [], $data);
     }
 
