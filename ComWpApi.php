@@ -122,7 +122,7 @@ class ComWpApi extends BaseWpApi {
 
     private function listItems($type){
         $url = $this->formatUrl($this->listFormat, $type);
-        return $this->get($url, ['context' => 'view']);
+        return $this->get($url, ['context' => 'edit']);
     }
 
     private function getItem($type, $id){
