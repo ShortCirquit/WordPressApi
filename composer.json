@@ -7,12 +7,9 @@
     "authors": [
         {
             "name": "Nabeel Sulieman",
-            "email": "nabsul@outlook.com"
+            "email": "n@runto.co"
         }
     ],
-    "require": {
-        "yiisoft/yii2": "*"
-    },
     "autoload": {
         "psr-4": {
             "ShortCirquit\\WordPressApi\\": ""
