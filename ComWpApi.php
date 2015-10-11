@@ -9,16 +9,12 @@
 namespace ShortCirquit\WordPressApi;
 
 class ComWpApi extends BaseWpApi {
-    public $type;
     public $clientId;
     public $clientSecret;
     public $redirectUrl;
     public $blogId;
     public $blogUrl;
     public $token;
-    public $adminToken;
-
-    public $useAdminToken = false;
 
     public $curlOptions = [
         CURLOPT_RETURNTRANSFER => true,
@@ -43,31 +39,27 @@ class ComWpApi extends BaseWpApi {
 
     public function __construct(array $config)
     {
-        $this->type = 'com';
         $this->clientId = $config['clientId'];
         $this->clientSecret = $config['clientSecret'];
         $this->redirectUrl = $config['redirectUrl'];
         $this->blogId = isset($config['blogId']) ? $config['blogId'] : null;
         $this->blogUrl = isset($config['blogUrl']) ? $config['blogUrl'] : null;
         $this->token = isset($config['accessToken']) ? $config['accessToken'] : null;
-        $this->adminToken = isset($config['adminToken']) ? $config['adminToken'] : null;
         $this->baseUrl = $this->wpBase;
     }
 
     public function getConfig(){
         return [
-            'type' => 'com',
             'clientId' => $this->clientId,
             'clientSecret' => $this->clientSecret,
             'redirectUrl' => $this->redirectUrl,
             'blogId' => $this->blogId,
             'blogUrl' => $this->blogUrl,
-            'adminToken' => $this->adminToken,
         ];
     }
 
     public function getAuthorizeUrl(){
-        $url = $this->baseUrl . $this->authorizeUrl;
+        $url = $this->wpBase . $this->authorizeUrl;
         $url .= "?client_id=$this->clientId&redirect_uri=$this->redirectUrl&response_type=code";
         $url .= $this->blogId !== null ? "&blog=$this->blogId" : '';
         return $url;
@@ -104,10 +96,7 @@ class ComWpApi extends BaseWpApi {
     public function listTypes() {return [];}
 
     protected function requestFilter(ApiRequest $request) {
-        $request->headers[] = 'Authorization: Bearer ' . ($this->useAdminToken ? $this->adminToken : $this->token);
-
-        // reset to using the regular token (useAdmin flag should be explicitly set each time).
-        $this->useAdminToken = false;
+        $request->headers[] = "Authorization: Bearer $this->token";
 
         if ($request->body != null)
         {
