@@ -10,6 +10,7 @@ namespace ShortCirquit\WordPressApi;
 
 class OrgWpApi extends BaseWpApi
 {
+    public $blogUrl;
     public $consumerKey;
     public $consumerSecret;
     public $accessToken;
@@ -36,11 +37,13 @@ class OrgWpApi extends BaseWpApi
 
     public function __construct(array $config)
     {
-        $this->baseUrl = $config['blogUrl'];
-        $this->consumerKey = $config['consumerKey'];
-        $this->consumerSecret = $config['consumerSecret'];
-        $this->accessToken = isset($config['accessToken']) ? $config['accessToken'] : null;
-        $this->accessTokenSecret = isset($config['accessTokenSecret']) ? $config['accessTokenSecret'] : null;
+        $vars = ['blogUrl', 'consumerKey', 'consumerSecret', 'accessToken', 'accessTokenSecret'];
+        foreach ($config as $k => $v){
+            if (in_array($k, $vars)){
+                $this->$k = $v;
+            }
+        }
+        $this->baseUrl = $this->blogUrl;
     }
 
     public function getConfig()
