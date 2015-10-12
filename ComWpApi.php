@@ -37,14 +37,14 @@ class ComWpApi extends BaseWpApi {
     private $repliesFormat   = '/rest/v1.1/sites/{blogId}/{type}/{id}/replies/';
     private $newReplyFormat = '/rest/v1.1/sites/{blogId}/{type}/{id}/replies/new';
 
-    public function __construct(array $config)
+    public function __construct(array $config = [])
     {
-        $this->clientId = $config['clientId'];
-        $this->clientSecret = $config['clientSecret'];
-        $this->redirectUrl = $config['redirectUrl'];
-        $this->blogId = isset($config['blogId']) ? $config['blogId'] : null;
-        $this->blogUrl = isset($config['blogUrl']) ? $config['blogUrl'] : null;
-        $this->token = isset($config['accessToken']) ? $config['accessToken'] : null;
+        $vars = ['clientId', 'clientSecret', 'redirectUrl', 'blogId', 'blogUrl', 'token'];
+        foreach ($config as $k => $v){
+            if (in_array($k, $vars)){
+                $this->$k = $v;
+            }
+        }
         $this->baseUrl = $this->wpBase;
     }
 
