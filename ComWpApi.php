@@ -84,7 +84,7 @@ class ComWpApi extends BaseWpApi {
     public function likePost($id){return $this->likeItem('posts', $id);}
     public function unlikePost($id){return $this->unlikeItem('posts', $id);}
 
-    public function listComments($postId) {return $this->getReplies($postId);}
+    public function listComments($postId, $params = []) {return $this->getReplies($postId, $params);}
     public function getComment($id) {return $this->getItem('comments', $id);}
     public function addComment($id, $data) {return $this->addReply($id, $data);}
     public function updateComment($id, $data) {return $this->updateItem('comments', $id, $data);}
@@ -124,9 +124,9 @@ class ComWpApi extends BaseWpApi {
         return $this->post($url, [], $data);
     }
 
-    private function getReplies($id){
+    private function getReplies($id, $params = []){
         $url = $this->formatUrl($this->repliesFormat, 'posts', $id);
-        return $this->get($url, ['context' => 'edit']);
+        return $this->get($url, array_merge($params, ['context' => 'edit']));
     }
 
     private function addReply($id, $data){
