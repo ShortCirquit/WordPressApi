@@ -76,7 +76,7 @@ class ComWpApi extends BaseWpApi {
         ));
     }
 
-    public function listPosts($params = []) {return $this->listItems('posts');}
+    public function listPosts($params = []) {return $this->listItems('posts', $params);}
     public function getPost($id) {return $this->getItem('posts', $id);}
     public function addPost($data) {return $this->newItem('posts', $data);}
     public function updatePost($id, $data) {return $this->updateItem('posts', $id, $data);}
@@ -109,9 +109,9 @@ class ComWpApi extends BaseWpApi {
         return $request;
     }
 
-    private function listItems($type){
+    private function listItems($type, $params = []){
         $url = $this->formatUrl($this->listFormat, $type);
-        return $this->get($url, ['context' => 'edit']);
+        return $this->get($url, array_merge($params,['context' => 'edit']));
     }
 
     private function getItem($type, $id){
