@@ -77,20 +77,20 @@ class ComWpApi extends BaseWpApi {
     }
 
     public function listPosts($params = []) {return $this->listItems('posts', $params);}
-    public function getPost($id) {return $this->getItem('posts', $id);}
-    public function addPost($data) {return $this->newItem('posts', $data);}
-    public function updatePost($id, $data) {return $this->updateItem('posts', $id, $data);}
-    public function deletePost($id) {return $this->deleteItem('posts', $id);}
-    public function likePost($id){return $this->likeItem('posts', $id);}
-    public function unlikePost($id){return $this->unlikeItem('posts', $id);}
+    public function getPost($id, $params = []) {return $this->getItem('posts', $id, $params);}
+    public function addPost($data, $params = []) {return $this->newItem('posts', $data, $params);}
+    public function updatePost($id, $data, $params = []) {return $this->updateItem('posts', $id, $data, $params);}
+    public function deletePost($id, $params = []) {return $this->deleteItem('posts', $id, $params);}
+    public function likePost($id, $params = []){return $this->likeItem('posts', $id, $params);}
+    public function unlikePost($id, $params = []){return $this->unlikeItem('posts', $id, $params);}
 
     public function listComments($postId, $params = []) {return $this->getReplies($postId, $params);}
-    public function getComment($id) {return $this->getItem('comments', $id);}
-    public function addComment($id, $data) {return $this->addReply($id, $data);}
-    public function updateComment($id, $data) {return $this->updateItem('comments', $id, $data);}
-    public function deleteComment($id) {return $this->deleteItem('comments', $id);}
-    public function likeComment($id){return $this->likeItem('comments', $id);}
-    public function unlikeComment($id){return $this->unlikeItem('comments', $id);}
+    public function getComment($id, $params = []) {return $this->getItem('comments', $id, $params);}
+    public function addComment($id, $data, $params = []) {return $this->addReply($id, $data, $params);}
+    public function updateComment($id, $data, $params = []) {return $this->updateItem('comments', $id, $data, $params);}
+    public function deleteComment($id, $params = []) {return $this->deleteItem('comments', $id, $params);}
+    public function likeComment($id, $params = []){return $this->likeItem('comments', $id, $params);}
+    public function unlikeComment($id, $params = []){return $this->unlikeItem('comments', $id, $params);}
 
     public function getSelf() {return $this->get($this->selfUrl);}
     public function listTypes() {return [];}
@@ -111,47 +111,47 @@ class ComWpApi extends BaseWpApi {
 
     private function listItems($type, $params = []){
         $url = $this->formatUrl($this->listFormat, $type);
-        return $this->get($url, array_merge($params,['context' => 'edit']));
+        return $this->get($url, $params);
     }
 
-    private function getItem($type, $id){
+    private function getItem($type, $id, $params = []){
         $url = $this->formatUrl($this->getFormat, $type, $id);
-        return $this->get($url, ['context' => 'edit']);
+        return $this->get($url, $params);
     }
 
-    private function newItem($type, $data){
+    private function newItem($type, $data, $params = []){
         $url = $this->formatUrl($this->addFormat, $type);
-        return $this->post($url, [], $data);
+        return $this->post($url, $params, $data);
     }
 
     private function getReplies($id, $params = []){
         $url = $this->formatUrl($this->repliesFormat, 'posts', $id);
-        return $this->get($url, array_merge($params, ['context' => 'edit']));
+        return $this->get($url, $params);
     }
 
-    private function addReply($id, $data){
+    private function addReply($id, $data, $params = []){
         $url = $this->formatUrl($this->newReplyFormat, 'posts', $id);
-        return $this->post($url, [], $data);
+        return $this->post($url, $params, $data);
     }
 
-    private function updateItem($type, $id, $data){
+    private function updateItem($type, $id, $data, $params = []){
         $url = $this->formatUrl($this->updateFormat, $type, $id);
-        return $this->post($url, [], $data);
+        return $this->post($url, $params, $data);
     }
 
-    private function deleteItem($type, $id){
+    private function deleteItem($type, $id, $params = []){
         $url = $this->formatUrl($this->deleteFormat, $type, $id);
-        return $this->post($url);
+        return $this->post($url, $params);
     }
 
-    private function likeItem($type, $id){
+    private function likeItem($type, $id, $params = []){
         $url = $this->formatUrl($this->likeFormat, $type, $id);
-        return $this->post($url);
+        return $this->post($url, $params);
     }
 
-    private function unlikeItem($type, $id){
+    private function unlikeItem($type, $id, $params = []){
         $url = $this->formatUrl($this->unlikeFormat, $type, $id);
-        return $this->post($url);
+        return $this->post($url, $params);
     }
 
     private function formatUrl($fmt, $type = '', $id = ''){
