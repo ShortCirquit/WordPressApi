@@ -14,5 +14,8 @@
         "psr-4": {
             "ShortCirquit\\WordPressApi\\": ""
         }
+    },
+    "require": {
+        "phpunit/phpunit": "^5.0"
     }
 }
