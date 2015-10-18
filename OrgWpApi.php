@@ -35,7 +35,7 @@ class OrgWpApi extends BaseWpApi
     private $commentsUrl =  '/wp-json/wp/v2/comments';
     private $customBase = '/wp-json/wp/v2/';
 
-    public function __construct(array $config)
+    public function __construct(array $config = [])
     {
         $vars = ['blogUrl', 'consumerKey', 'consumerSecret', 'accessToken', 'accessTokenSecret'];
         foreach ($config as $k => $v){
@@ -71,22 +71,22 @@ class OrgWpApi extends BaseWpApi
     }
 
     public function listCustom($type, $params = []) {return $this->get($this->customBase . $type, $params);}
-    public function getCustom($type, $id) {return $this->get($this->customBase . $type . "/$id");}
-    public function addCustom($type, $data) {return $this->post($this->customBase . $type, [], $data);}
-    public function updateCustom($type, $id, $data) {return $this->put($this->customBase . $type . "/$id", [], $data);}
-    public function deleteCustom($type, $id) {return $this->delete($this->customBase . $type . "/$id");}
+    public function getCustom($type, $id, $params = []) {return $this->get($this->customBase . $type . "/$id", $params);}
+    public function addCustom($type, $data, $params = []) {return $this->post($this->customBase . $type, $params, $data);}
+    public function updateCustom($type, $id, $params = [], $data) {return $this->put($this->customBase . $type . "/$id", $params, $data);}
+    public function deleteCustom($type, $id, $params = []) {return $this->delete($this->customBase . $type . "/$id", $params);}
 
     public function listPosts($params = []) {return $this->get($this->postUrl, $params);}
-    public function getPost($id) {return $this->get($this->postUrl . "/$id");}
-    public function addPost($data) {return $this->post($this->postUrl, [], $data);}
-    public function updatePost($id, $data) {return $this->put($this->postUrl . "/$id", [], $data);}
-    public function deletePost($id) {return $this->delete($this->postUrl . "/$id");}
+    public function getPost($id, $params = []) {return $this->get($this->postUrl . "/$id", $params);}
+    public function addPost($data, $params = []) {return $this->post($this->postUrl, $params, $data);}
+    public function updatePost($id, $data, $params = []) {return $this->put($this->postUrl . "/$id", $params, $data);}
+    public function deletePost($id, $params = []) {return $this->delete($this->postUrl . "/$id", $params);}
 
     public function listComments($postId, $params = []) {return $this->get($this->commentsUrl, ['post' => $postId] + $params);}
-    public function getComment($id) {return $this->get($this->commentsUrl . "/$id");}
-    public function addComment($data) {return $this->post($this->commentsUrl, [], $data);}
-    public function updateComment($id, $data) {return $this->put($this->commentsUrl . "/$id", [], $data);}
-    public function deleteComment($id) {return $this->delete($this->commentsUrl . "/$id");}
+    public function getComment($id, $params = []) {return $this->get($this->commentsUrl . "/$id", $params);}
+    public function addComment($data, $params = []) {return $this->post($this->commentsUrl, $params, $data);}
+    public function updateComment($id, $data, $params = []) {return $this->put($this->commentsUrl . "/$id", $params, $data);}
+    public function deleteComment($id, $params = []) {return $this->delete($this->commentsUrl . "/$id", $params);}
 
     public function getSelf() {return $this->get($this->selfUrl, ['_envelope' => 1]);}
     public function listTypes() {return $this->get($this->typeUrl);}
