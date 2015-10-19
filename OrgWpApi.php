@@ -8,8 +8,6 @@
 
 namespace ShortCirquit\WordPressApi;
 
-use yii\log\Logger;
-
 class OrgWpApi extends BaseWpApi
 {
     public $blogUrl;
@@ -95,7 +93,6 @@ class OrgWpApi extends BaseWpApi
 
     protected function requestFilter(ApiRequest $req)
     {
-        \Yii::getLogger()->log('access token: ' . $this->token, Logger::LEVEL_INFO);
         if ($this->token != null || isset($req->params['oauth_token']) || isset($req->params['oauth_callback']))
         {
             $req->params = $this->signRequest($req->method, $req->url, $req->params);
