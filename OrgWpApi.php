@@ -8,13 +8,15 @@
 
 namespace ShortCirquit\WordPressApi;
 
+use yii\log\Logger;
+
 class OrgWpApi extends BaseWpApi
 {
     public $blogUrl;
     public $consumerKey;
     public $consumerSecret;
-    public $accessToken;
-    public $accessTokenSecret;
+    public $token;
+    public $tokenSecret;
 
     protected $curlOptions = [
         CURLOPT_FOLLOWLOCATION => true,
@@ -37,7 +39,7 @@ class OrgWpApi extends BaseWpApi
 
     public function __construct(array $config = [])
     {
-        $vars = ['blogUrl', 'consumerKey', 'consumerSecret', 'accessToken', 'accessTokenSecret'];
+        $vars = ['blogUrl', 'consumerKey', 'consumerSecret', 'token', 'tokenSecret'];
         foreach ($config as $k => $v){
             if (in_array($k, $vars)){
                 $this->$k = $v;
@@ -73,7 +75,7 @@ class OrgWpApi extends BaseWpApi
     public function listCustom($type, $params = []) {return $this->get($this->customBase . $type, $params);}
     public function getCustom($type, $id, $params = []) {return $this->get($this->customBase . $type . "/$id", $params);}
     public function addCustom($type, $data, $params = []) {return $this->post($this->customBase . $type, $params, $data);}
-    public function updateCustom($type, $id, $params = [], $data) {return $this->put($this->customBase . $type . "/$id", $params, $data);}
+    public function updateCustom($type, $id, $data, $params = []) {return $this->put($this->customBase . $type . "/$id", $params, $data);}
     public function deleteCustom($type, $id, $params = []) {return $this->delete($this->customBase . $type . "/$id", $params);}
 
     public function listPosts($params = []) {return $this->get($this->postUrl, $params);}
@@ -93,7 +95,8 @@ class OrgWpApi extends BaseWpApi
 
     protected function requestFilter(ApiRequest $req)
     {
-        if ($this->accessToken != null)
+        \Yii::getLogger()->log('access token: ' . $this->token, Logger::LEVEL_INFO);
+        if ($this->token != null || isset($req->params['oauth_token']) || isset($req->params['oauth_callback']))
         {
             $req->params = $this->signRequest($req->method, $req->url, $req->params);
             $req->headers[] = $this->composeAuthorizationHeader($req->params);
@@ -130,8 +133,8 @@ class OrgWpApi extends BaseWpApi
             'oauth_timestamp' => time(),
             'oauth_consumer_key' => $this->consumerKey,
         ]);
-        if ($this->accessToken != null)
-            $params['oauth_token'] = $this->accessToken;
+        if ($this->token != null)
+            $params['oauth_token'] = $this->token;
         $params['oauth_signature_method'] = 'HMAC-SHA1';
         $signatureBaseString = $this->composeSignatureBaseString($method, $this->baseUrl . $url, $params);
         $signatureKey = $this->composeSignatureKey();
@@ -162,7 +165,7 @@ class OrgWpApi extends BaseWpApi
             $this->consumerSecret
         ];
 
-        $signatureKeyParts[] = $this->accessTokenSecret ?: '';
+        $signatureKeyParts[] = $this->tokenSecret ?: '';
         $signatureKeyParts = array_map('rawurlencode', $signatureKeyParts);
 
         return implode('&', $signatureKeyParts);
