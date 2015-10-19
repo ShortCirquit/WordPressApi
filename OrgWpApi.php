@@ -93,9 +93,12 @@ class OrgWpApi extends BaseWpApi
 
     protected function requestFilter(ApiRequest $req)
     {
-        $req->params = $this->signRequest($req->method, $req->url, $req->params);
+        if ($this->accessToken != null)
+        {
+            $req->params = $this->signRequest($req->method, $req->url, $req->params);
+            $req->headers[] = $this->composeAuthorizationHeader($req->params);
+        }
         $req->headers[] = 'Content-type: application/json';
-        $req->headers[] = $this->composeAuthorizationHeader($req->params);
         if ($req->body != null)
             $req->body = json_encode($req->body);
         return $req;
