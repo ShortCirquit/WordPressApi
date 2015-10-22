@@ -11,6 +11,13 @@ namespace ShortCirquit\WordPressApi;
 class BaseWpApi
 {
     public $baseUrl;
+
+    private $_lastHeaders;
+    public function getLastHeaders()
+    {
+        return $this->_lastHeaders;
+    }
+
     protected $curlOptions;
 
     protected function get($url, $params = []){
@@ -75,9 +82,12 @@ class BaseWpApi
 
         curl_setopt($curlResource, CURLOPT_CUSTOMREQUEST, $request->method);
         curl_setopt($curlResource, CURLOPT_HTTPHEADER, $request->headers);
+        curl_setopt($curlResource, CURLOPT_HEADER, true);
 
         $response = curl_exec($curlResource);
         $responseHeaders = curl_getinfo($curlResource);
+        $this->_lastHeaders = substr($response, 0, $responseHeaders['header_size']);
+        $response = substr($response, $responseHeaders['header_size']);
         $errorNumber = curl_errno($curlResource);
         $errorMessage = curl_error($curlResource);
 
