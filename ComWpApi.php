@@ -93,6 +93,8 @@ class ComWpApi extends BaseWpApi {
     public function unlikeComment($id, $params = []){return $this->unlikeItem('comments', $id, $params);}
 
     public function getSelf() {return $this->get($this->selfUrl);}
+    public function getUsers($params = []){return $this->listItems('users', $params);}
+    public function getUser($id, $params = []) {return $this->getItem('users', $id, $params);}
     public function listTypes() {return [];}
 
     protected function requestFilter(ApiRequest $request) {
