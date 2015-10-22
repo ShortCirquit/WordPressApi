@@ -30,6 +30,7 @@ class OrgWpApi extends BaseWpApi
     private $authorizeUrl = '/oauth1/authorize';
     private $accessUrl =    '/oauth1/access';
     private $postUrl =      '/wp-json/wp/v2/posts';
+    private $userUrl =      '/wp-json/wp/v2/users';
     private $typeUrl =      '/wp-json/wp/v2/types';
     private $selfUrl =      '/wp-json/wp/v2/users/me';
     private $commentsUrl =  '/wp-json/wp/v2/comments';
@@ -88,7 +89,9 @@ class OrgWpApi extends BaseWpApi
     public function updateComment($id, $data, $params = []) {return $this->put($this->commentsUrl . "/$id", $params, $data);}
     public function deleteComment($id, $params = []) {return $this->delete($this->commentsUrl . "/$id", $params);}
 
-    public function getSelf() {return $this->get($this->selfUrl, ['_envelope' => 1]);}
+    public function getSelf($params = []) {return $this->get($this->selfUrl, $params + ['_envelope' => 1]);}
+    public function getUser($id, $params = []){return $this->get($this->userUrl . "/$id", $params);}
+    public function getUsers($params = []){return $this->get($this->userUrl, $params);}
     public function listTypes() {return $this->get($this->typeUrl);}
 
     protected function requestFilter(ApiRequest $req)
