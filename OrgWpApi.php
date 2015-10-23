@@ -47,15 +47,6 @@ class OrgWpApi extends BaseWpApi
         $this->baseUrl = $this->blogUrl;
     }
 
-    public function getConfig()
-    {
-        return [
-            'consumerKey' => $this->consumerKey,
-            'consumerSecret' => $this->consumerSecret,
-            'blogUrl' => $this->baseUrl,
-        ];
-    }
-
     public function getAuthorizeUrl($returnUrl){
         $response = $this->get($this->requestUrl, ['oauth_callback' => $returnUrl]);
         $params = ['oauth_callback' => $returnUrl, 'oauth_token' => $response['oauth_token'],];

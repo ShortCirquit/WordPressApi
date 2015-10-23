@@ -48,16 +48,6 @@ class ComWpApi extends BaseWpApi {
         $this->baseUrl = $this->wpBase;
     }
 
-    public function getConfig(){
-        return [
-            'clientId' => $this->clientId,
-            'clientSecret' => $this->clientSecret,
-            'redirectUrl' => $this->redirectUrl,
-            'blogId' => $this->blogId,
-            'blogUrl' => $this->blogUrl,
-        ];
-    }
-
     public function getAuthorizeUrl(){
         $url = $this->wpBase . $this->authorizeUrl;
         $url .= "?client_id=$this->clientId&redirect_uri=$this->redirectUrl&response_type=code";
