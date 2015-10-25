@@ -1,0 +1,19 @@
+{
+  "com": {
+    "blogUrl": "",
+    "blogId": "",
+    "adminToken": "",
+    "clientId": "",
+    "clientSecret": "",
+    "redirectUrl": "",
+    "type": "ShortCirquit\\LinkoScopeApi\\ComLinkoScope"
+  },
+  "org": {
+    "consumerKey": "",
+    "consumerSecret": "",
+    "blogUrl": "",
+    "type": "ShortCirquit\\LinkoScopeApi\\OrgLinkoScope",
+    "adminToken": "",
+    "adminSecret": ""
+  }
+}

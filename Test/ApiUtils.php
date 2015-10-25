@@ -20,24 +20,24 @@ use ShortCirquit\WordPressApi\OrgWpApi;
  */
 class ApiUtils
 {
+    private static $file = __DIR__ . '/config.json';
+
     /**
      * Create ComWpApi instance
      *
      * @return ComWpApi
      */
     public static function getComApi(){
-        $file = __DIR__ . '/config_com.json';
-        $cfg = json_decode(file_get_contents($file), true);
-        return new ComWpApi($cfg);
+        $cfg = json_decode(file_get_contents(ApiUtils::$file), true);
+        return new ComWpApi($cfg['com']);
     }
 
     /**
      * @return OrgWpApi
      */
     public static function getOrgApi(){
-        $file = __DIR__ . '/config_org.json';
-        $cfg = json_decode(file_get_contents($file), true);
-        return new OrgWpApi($cfg);
+        $cfg = json_decode(file_get_contents(ApiUtils::$file), true);
+        return new OrgWpApi($cfg['org']);
     }
 
     /**
