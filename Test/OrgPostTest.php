@@ -17,7 +17,8 @@ class OrgPostTest extends PostTestBase
      */
     protected $api;
 
-    public function setUp(){
+    public function setUp()
+    {
         $this->api = ApiUtils::getOrgApi();
     }
 
@@ -26,29 +27,39 @@ class OrgPostTest extends PostTestBase
         $this->assertNotNull($this->api->getSelf(), 'Failed to get use profile.');
     }
 
-    protected function createPost(PostTestModel $post){
+    protected function createPost(PostTestModel $post)
+    {
         $p = $this->api->addPost(ApiUtils::postToOrg($post));
+
         return ApiUtils::orgToPost($p);
     }
 
-    protected function listPosts(){
+    protected function listPosts()
+    {
         $posts = $this->api->listPosts(['context' => 'edit']);
-        return array_map(function($p){return ApiUtils::orgToPost($p);}, $posts);
+
+        return array_map(function ($p) { return ApiUtils::orgToPost($p); }, $posts);
     }
 
-    protected function getPost($id){
+    protected function getPost($id)
+    {
         $p = $this->api->getPost($id, ['context' => 'edit']);
+
         return ApiUtils::orgToPost($p);
     }
 
-    protected function updatePost(PostTestModel $post){
+    protected function updatePost(PostTestModel $post)
+    {
         $p = $this->api->updatePost($post->id, ApiUtils::postToOrg($post));
+
         return ApiUtils::orgToPost($p);
     }
 
-    protected function deletePost($id){
+    protected function deletePost($id)
+    {
         $p = $this->api->deletePost($id);
         $this->assertEquals('publish', $p['status']);
+
         return ApiUtils::orgToPost($p);
     }
 }

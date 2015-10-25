@@ -11,24 +11,33 @@ namespace ShortCirquit\WordPressApi\Test;
 
 abstract class PostTestBase extends \PHPUnit_Framework_TestCase
 {
-    public function testCreatePosts(){
+    public function testCreatePosts()
+    {
         $p1 = $this->createPost(ApiUtils::makePost('title1', 'content1'));
         $p2 = $this->createPost(ApiUtils::makePost('title2', 'content2'));
         $this->assertNotEquals($p1->id, $p2->id, 'Two created posts should not have the same ID');
+
         return [$p1, $p2];
     }
 
     /**
      * @depends testCreatePosts
      */
-    public function testListPosts($input){
+    public function testListPosts($input)
+    {
         $posts = $this->listPosts();
-        $this->assertGreaterThanOrEqual(count($input), count($posts), 'listing posts should at least return the number of posts we added');
+        $this->assertGreaterThanOrEqual(
+            count($input), count($posts), 'listing posts should at least return the number of posts we added'
+        );
 
         $postMap = [];
-        foreach ($posts as $p){$postMap[$p->id] = $p;}
+        foreach ($posts as $p)
+        {
+            $postMap[$p->id] = $p;
+        }
 
-        foreach ($input as $p){
+        foreach ($input as $p)
+        {
             $this->assertArrayHasKey($p->id, $postMap);
 
             /**
@@ -40,14 +49,17 @@ abstract class PostTestBase extends \PHPUnit_Framework_TestCase
             $this->assertEquals(0, $post->likes);
             $this->assertEquals(false, $post->hasLiked);
         }
+
         return $input;
     }
 
     /**
      * @depends testListPosts
      */
-    public function testGetPost($input){
-        foreach ($input as $p){
+    public function testGetPost($input)
+    {
+        foreach ($input as $p)
+        {
             /**
              * @var PostTestModel $post
              */
@@ -57,6 +69,7 @@ abstract class PostTestBase extends \PHPUnit_Framework_TestCase
             $this->assertEquals(0, $post->likes);
             $this->assertEquals(false, $post->hasLiked);
         }
+
         return $input;
     }
 
@@ -65,7 +78,8 @@ abstract class PostTestBase extends \PHPUnit_Framework_TestCase
      */
     public function testUpdatePost($input)
     {
-        foreach ($input as $p){
+        foreach ($input as $p)
+        {
             $post = $this->getPost($p->id);
             $this->assertEquals($p->title, $post->title);
             $this->assertEquals($p->content, $post->content);
@@ -83,14 +97,17 @@ abstract class PostTestBase extends \PHPUnit_Framework_TestCase
             $this->assertEquals($p->title, $post->title);
             $this->assertEquals($p->content, $post->content);
         }
+
         return $input;
     }
 
     /**
      * @depends testUpdatePost
      */
-    public function testDeletePosts($input){
-        foreach ($input as $p){
+    public function testDeletePosts($input)
+    {
+        foreach ($input as $p)
+        {
             /**
              * @var PostTestModel $post
              */
@@ -101,6 +118,7 @@ abstract class PostTestBase extends \PHPUnit_Framework_TestCase
             $post = $this->getPost($p->id);
             $this->assertEquals('trash', $post->status);
         }
+
         return $input;
     }
 

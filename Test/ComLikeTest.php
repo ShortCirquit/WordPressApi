@@ -17,7 +17,8 @@ class ComLikeTest extends \PHPUnit_Framework_TestCase
      */
     protected $api;
 
-    public function setUp(){
+    public function setUp()
+    {
         $this->api = ApiUtils::getComApi();
     }
 
@@ -45,21 +46,26 @@ class ComLikeTest extends \PHPUnit_Framework_TestCase
         $this->api->deletePost($id);
     }
 
-    private function getPost($id){
+    private function getPost($id)
+    {
         return ApiUtils::comToPost($this->api->getPost($id));
     }
 
-    private function likePost($id){
+    private function likePost($id)
+    {
         $p = $this->api->likePost($id);
         $this->assertArrayHasKey('like_count', $p);
         $this->assertArrayHasKey('i_like', $p);
+
         return $p['like_count'];
     }
 
-    private function unlikePost($id){
+    private function unlikePost($id)
+    {
         $p = $this->api->unlikePost($id);
         $this->assertArrayHasKey('like_count', $p);
         $this->assertArrayHasKey('i_like', $p);
+
         return $p['like_count'];
     }
 }

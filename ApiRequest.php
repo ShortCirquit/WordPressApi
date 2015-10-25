@@ -20,9 +20,12 @@ class ApiRequest
     public function __construct(array $cfg = [])
     {
         $params = ['method', 'url', 'header', 'params', 'curlOptions', 'body'];
-        foreach ($params as $p){
+        foreach ($params as $p)
+        {
             if (isset($cfg[$p]))
+            {
                 $this->$p = $cfg[$p];
+            }
         }
     }
 }

@@ -27,16 +27,20 @@ class ApiUtils
      *
      * @return ComWpApi
      */
-    public static function getComApi(){
+    public static function getComApi()
+    {
         $cfg = json_decode(file_get_contents(ApiUtils::$file), true);
+
         return new ComWpApi($cfg['com']);
     }
 
     /**
      * @return OrgWpApi
      */
-    public static function getOrgApi(){
+    public static function getOrgApi()
+    {
         $cfg = json_decode(file_get_contents(ApiUtils::$file), true);
+
         return new OrgWpApi($cfg['org']);
     }
 
@@ -46,7 +50,8 @@ class ApiUtils
      * @param $p
      * @return PostTestModel
      */
-    public static function comToPost($p){
+    public static function comToPost($p)
+    {
         $post = new PostTestModel();
         $post->id = $p['ID'];
         $post->date = $p['date'];
@@ -55,6 +60,7 @@ class ApiUtils
         $post->likes = $p['like_count'];
         $post->hasLiked = $p['i_like'] == 1 ? true : false;
         $post->status = $p['status'];
+
         return $post;
     }
 
@@ -64,13 +70,30 @@ class ApiUtils
      * @param PostTestModel $post
      * @return array
      */
-    public static function postToCom(PostTestModel $post){
+    public static function postToCom(PostTestModel $post)
+    {
         $data = [];
-        if ($post->id != null) $data['ID'] = $post->id;
-        if ($post->date != null) $data['date'] = $post->date;
-        if ($post->title != null) $data['title'] = $post->title;
-        if ($post->content != null) $data['content'] = $post->content;
-        if ($post->status != null) $data['status'] = $post->status;
+        if ($post->id != null)
+        {
+            $data['ID'] = $post->id;
+        }
+        if ($post->date != null)
+        {
+            $data['date'] = $post->date;
+        }
+        if ($post->title != null)
+        {
+            $data['title'] = $post->title;
+        }
+        if ($post->content != null)
+        {
+            $data['content'] = $post->content;
+        }
+        if ($post->status != null)
+        {
+            $data['status'] = $post->status;
+        }
+
         return $data;
     }
 
@@ -80,13 +103,15 @@ class ApiUtils
      * @param $p
      * @return PostTestModel
      */
-    public static function orgToPost($p){
+    public static function orgToPost($p)
+    {
         $post = new PostTestModel();
         $post->id = $p['id'];
         $post->date = $p['date'];
         $post->title = $p['title']['raw'];
         $post->content = $p['content']['raw'];
         $post->status = $p['status'];
+
         return $post;
     }
 
@@ -94,13 +119,30 @@ class ApiUtils
      * @param PostTestModel $post
      * @return array
      */
-    public static function postToOrg(PostTestModel $post){
+    public static function postToOrg(PostTestModel $post)
+    {
         $data = [];
-        if ($post->id != null) $data['id'] = $post->id;
-        if ($post->date != null) $data['date'] = $post->date;
-        if ($post->title != null) $data['title'] = $post->title;
-        if ($post->content != null) $data['content'] = $post->content;
-        if ($post->status != null) $data['status'] = $post->status;
+        if ($post->id != null)
+        {
+            $data['id'] = $post->id;
+        }
+        if ($post->date != null)
+        {
+            $data['date'] = $post->date;
+        }
+        if ($post->title != null)
+        {
+            $data['title'] = $post->title;
+        }
+        if ($post->content != null)
+        {
+            $data['content'] = $post->content;
+        }
+        if ($post->status != null)
+        {
+            $data['status'] = $post->status;
+        }
+
         return $data;
     }
 
@@ -109,11 +151,13 @@ class ApiUtils
      * @param $content
      * @return PostTestModel
      */
-    public static function makePost($title, $content){
+    public static function makePost($title, $content)
+    {
         $p = new PostTestModel();
         $p->title = 'Unit Test Title: ' . $title;
         $p->content = 'Unit Test Content: ' . $content;
         $p->status = 'publish';
+
         return $p;
     }
 }

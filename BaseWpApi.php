@@ -13,6 +13,7 @@ class BaseWpApi
     public $baseUrl;
 
     private $_lastHeaders;
+
     public function getLastHeaders()
     {
         return $this->_lastHeaders;
@@ -20,38 +21,58 @@ class BaseWpApi
 
     protected $curlOptions;
 
-    protected function get($url, $params = []){
-        return $this->send(new ApiRequest([
-            'method' => 'GET',
-            'url' => $url,
-            'params' => $params,
-        ]));
+    protected function get($url, $params = [])
+    {
+        return $this->send(
+            new ApiRequest(
+                [
+                    'method' => 'GET',
+                    'url'    => $url,
+                    'params' => $params,
+                ]
+            )
+        );
     }
 
-    protected function delete($url, $params = []){
-        return $this->send(new ApiRequest([
-            'method' => 'DELETE',
-            'url' => $url,
-            'params' => $params,
-        ]));
+    protected function delete($url, $params = [])
+    {
+        return $this->send(
+            new ApiRequest(
+                [
+                    'method' => 'DELETE',
+                    'url'    => $url,
+                    'params' => $params,
+                ]
+            )
+        );
     }
 
-    protected function post($url, $params = [], $body = null){
-        return $this->send(new ApiRequest([
-            'method' => 'POST',
-            'url' => $url,
-            'params' => $params,
-            'body' => $body,
-        ]));
+    protected function post($url, $params = [], $body = null)
+    {
+        return $this->send(
+            new ApiRequest(
+                [
+                    'method' => 'POST',
+                    'url'    => $url,
+                    'params' => $params,
+                    'body'   => $body,
+                ]
+            )
+        );
     }
 
-    protected function put($url, $params = [], $body = null){
-        return $this->send(new ApiRequest([
-            'method' => 'PUT',
-            'url' => $url,
-            'params' => $params,
-            'body' => $body,
-        ]));
+    protected function put($url, $params = [], $body = null)
+    {
+        return $this->send(
+            new ApiRequest(
+                [
+                    'method' => 'PUT',
+                    'url'    => $url,
+                    'params' => $params,
+                    'body'   => $body,
+                ]
+            )
+        );
     }
 
     protected function requestFilter(ApiRequest $request)
@@ -72,11 +93,13 @@ class BaseWpApi
             $curlOptions[CURLOPT_POSTFIELDS] = $request->body;
         }
 
-        foreach ($request->curlOptions as $option => $value){
+        foreach ($request->curlOptions as $option => $value)
+        {
             $curlOptions[$option] = $value;
         }
 
-        foreach ($curlOptions as $option => $value) {
+        foreach ($curlOptions as $option => $value)
+        {
             curl_setopt($curlResource, $option, $value);
         }
 
@@ -93,29 +116,36 @@ class BaseWpApi
 
         curl_close($curlResource);
 
-        if ($errorNumber > 0) {
+        if ($errorNumber > 0)
+        {
             $message = 'Curl error requesting "' .
                 $url . '": #' . $errorNumber .
                 ' - ' . $errorMessage;
             throw new WpApiException(500, $message);
         }
 
-        if (strncmp($responseHeaders['http_code'], '20', 2) !== 0) {
+        if (strncmp($responseHeaders['http_code'], '20', 2) !== 0)
+        {
             throw new WpApiException($responseHeaders['http_code'], $responseHeaders['http_code'] . ': ' . $response);
         }
 
         $result = json_decode($response, true);
         if ($result == null)
+        {
             parse_str($response, $result);
+        }
+
         return $result;
     }
 
     private function composeUrl($url, $params = null)
     {
         $result = $this->baseUrl . $url;
-        if (!empty($params)){
+        if ( ! empty($params))
+        {
             $result .= '?' . http_build_query($params, '', '&', PHP_QUERY_RFC3986);
         }
+
         return $result;
     }
 }
