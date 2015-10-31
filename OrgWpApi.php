@@ -32,6 +32,7 @@ class OrgWpApi extends BaseWpApi
     private $postUrl = '/wp-json/wp/v2/posts';
     private $userUrl = '/wp-json/wp/v2/users';
     private $typeUrl = '/wp-json/wp/v2/types';
+    private $tagsUrl = '/wp-json/wp/v2/terms/tag';
     private $selfUrl = '/wp-json/wp/v2/users/me';
     private $commentsUrl = '/wp-json/wp/v2/comments';
     private $customBase = '/wp-json/wp/v2/';
@@ -135,6 +136,12 @@ class OrgWpApi extends BaseWpApi
     public function getUsers($params = []) { return $this->get($this->userUrl, $params); }
 
     public function listTypes() { return $this->get($this->typeUrl); }
+
+    public function listAllTags($params = []) { return $this->get($this->tagsUrl, $params); }
+
+    public function addTag($name, $params = []){return $this->post($this->tagsUrl, $params, ['name' => $name]);}
+
+    public function deleteTag($id, $params = []){return $this->delete($this->postUrl . "/$id", $params);}
 
     protected function requestFilter(ApiRequest $req)
     {
