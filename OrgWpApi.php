@@ -141,7 +141,7 @@ class OrgWpApi extends BaseWpApi
 
     public function addTag($name, $params = []){return $this->post($this->tagsUrl, $params, ['name' => $name]);}
 
-    public function deleteTag($id, $params = []){return $this->delete($this->postUrl . "/$id", $params);}
+    public function deleteTag($id, $params = []){return $this->delete($this->tagsUrl . "/$id", $params);}
 
     protected function requestFilter(ApiRequest $req)
     {
