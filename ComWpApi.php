@@ -37,6 +37,9 @@ class ComWpApi extends BaseWpApi
     private $unlikeFormat = '/rest/v1.1/sites/{blogId}/{type}/{id}/likes/mine/delete';
     private $repliesFormat = '/rest/v1.1/sites/{blogId}/{type}/{id}/replies/';
     private $newReplyFormat = '/rest/v1.1/sites/{blogId}/{type}/{id}/replies/new';
+    private $newTagFormat = '/rest/v1.1/sites/{blogId}/tags/new';
+    private $deleteTagFormat = '/rest/v1.1/sites/{blogId}/tags/slug:{id}/delete';
+    private $listTagsFormat = '/rest/v1.1/sites/{blogId}/tags';
 
     public function __construct(array $config = [])
     {
@@ -113,6 +116,12 @@ class ComWpApi extends BaseWpApi
     public function getUser($id, $params = []) { return $this->getItem('users', $id, $params); }
 
     public function listTypes() { return []; }
+
+    public function listAllTags() { return $this->get($this->formatUrl($this->listTagsFormat)); }
+
+    public function addTag($name) { return $this->post($this->formatUrl($this->newTagFormat), [], ['name' => $name]);}
+
+    public function deleteTag($id) { return $this->post($this->formatUrl($this->deleteTagFormat, '', $id));}
 
     protected function requestFilter(ApiRequest $request)
     {
