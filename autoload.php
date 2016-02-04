@@ -16,7 +16,7 @@
  */
 spl_autoload_register(function ($class) {
     // project-specific namespace prefix
-    $prefix = 'ShortCirquit\\';
+    $prefix = 'ShortCirquit\WordPressApi\\';
 
     // For backwards compatibility
     $customBaseDir = '';
